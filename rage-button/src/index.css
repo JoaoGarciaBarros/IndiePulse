@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@layer base {
+  * { box-sizing: border-box; }
+  body {
+    @apply bg-gray-950 text-gray-100;
+    font-family: ui-monospace, Consolas, 'Courier New', monospace;
+    margin: 0;
+  }
+  #root {
+    min-height: 100vh;
+    width: 100%;
+  }
+}
+
+@keyframes rage-pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  50% { transform: scale(1.06); box-shadow: 0 0 0 24px rgba(239, 68, 68, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+@keyframes rage-shake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  15% { transform: translateX(-8px) rotate(-2deg); }
+  30% { transform: translateX(8px) rotate(2deg); }
+  45% { transform: translateX(-6px) rotate(-1deg); }
+  60% { transform: translateX(6px) rotate(1deg); }
+  75% { transform: translateX(-3px); }
+}
+
+@keyframes success-bounce {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes glow-red {
+  0%, 100% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.4), 0 0 40px rgba(239, 68, 68, 0.1); }
+  50% { box-shadow: 0 0 30px rgba(239, 68, 68, 0.7), 0 0 60px rgba(239, 68, 68, 0.3); }
+}
+
+.rage-pulse { animation: rage-pulse 0.6s ease-out; }
+.rage-shake { animation: rage-shake 0.5s ease-in-out; }
+.success-bounce { animation: success-bounce 0.4s ease-out; }
+.spin { animation: spin 0.8s linear infinite; }
+.glow-red { animation: glow-red 2s ease-in-out infinite; }
+
+.scrollbar-dark::-webkit-scrollbar { width: 6px; }
+.scrollbar-dark::-webkit-scrollbar-track { background: #111; }
+.scrollbar-dark::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }

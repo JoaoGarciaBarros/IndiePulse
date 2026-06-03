@@ -1,0 +1,25 @@
+# Core
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.10.0
+pydantic-settings>=2.7.0
+
+# Database
+sqlalchemy>=2.0.0
+asyncpg>=0.29.0    # PostgreSQL async driver (Supabase)
+aiosqlite>=0.20.0  # SQLite async driver (fallback local)
+
+# HTTP / files
+httpx>=0.28.0
+python-multipart>=0.0.20
+aiofiles>=24.1.0
+python-dotenv>=1.0.0
+
+# Image / screenshot
+pillow>=10.0.0
+
+# Replay (optional — comment out if not needed)
+numpy>=1.26.0
+av>=12.0.0                    # PyAV — H.264 encoding (needs libav)
+mss>=9.0.0                    # Screen capture (mss mode only)
+opencv-python-headless>=4.9.0  # Frame processing

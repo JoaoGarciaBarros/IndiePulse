@@ -1,0 +1,2 @@
+[2026-06-03T01:03:22.051000] [LOG] [RageTrigger] System initialized
+[2026-06-03T01:03:22.052000] [LOG] [RageTrigger] System initialized

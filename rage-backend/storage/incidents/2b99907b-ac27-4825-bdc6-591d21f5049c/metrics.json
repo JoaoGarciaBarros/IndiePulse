@@ -1,0 +1,12 @@
+{
+  "fps": 120.0,
+  "memory": 4.0,
+  "resolution": "1680x1050",
+  "browser": "Chrome 148.0.0.0",
+  "os": "Windows 10/11",
+  "ping": 73.0,
+  "networkType": null,
+  "networkDownlink": null,
+  "jsHeapSize": 15.0,
+  "jsHeapLimit": 4096.0
+}
