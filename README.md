@@ -1,205 +1,116 @@
-# RageTrigger 💢
+# Documentação IndiePulse 
 
-Sistema de telemetria para jogos. O jogador aperta um botão e o sistema captura automaticamente screenshot, logs do console, métricas de performance e envia tudo para o backend.
+# **Arquitetura Haiku**
 
----
+## **Objetivo**
 
-## Estrutura
-
-```
-IndiePulse/
-├── rage-button/     → Frontend (React + Vite + TailwindCSS)
-├── rage-backend/    → Backend  (Python + FastAPI + Supabase)
-├── start.bat        → Inicia tudo com 1 clique (Windows)
-└── start.ps1        → Alternativa PowerShell
-```
+* criar um ambiente propício para que estúdios com baixo orçamento possam manter uma alta qualidade nas suas produções.  
+* a comunidade participando ativamente nesse processo.  
+* redução de 40% no tempo de identificação de bugs críticos.
 
 ---
 
-## Início rápido (recomendado)
+## **Requisitos Funcionais**
 
-Dê **dois cliques** no arquivo `start.bat` na raiz do projeto.
+### **Dashboards devs**
 
-Abre duas janelas automaticamente:
-- **Frontend** → http://localhost:5173
-- **Backend** → http://localhost:8000
+* Visualizações contextualizadas de dados de erros.  
+* Categorizar erros por locais e/ou quantidade de reports iguais.  
+* Desenvolvidos para análises críticas detalhadas e precisas.
 
-> Precisa ter feito o setup abaixo pelo menos uma vez antes.
+### **"Playtesting" ao vivo**
 
----
-
-## Setup (primeira vez)
-
-### Pré-requisitos
-
-- [Node.js 18+](https://nodejs.org/)
-- [Python 3.11+](https://python.org/)
-- Conta no [Supabase](https://supabase.com/) com o schema criado
+* Rodar em nuvem, sem precisar de download.  
+* Garantir que esteja atualizado.  
+* disponibilizar maneiras de reportar erros.
 
 ---
 
-### 1. Frontend
+## **Escopo**
 
-```bash
-cd rage-button
-npm install
-```
+* Permitir que jogadores testem jogos via navegador.  
+* Coletar relatórios de bugs e telemetria.  
+* Disponibilizar dashboards para análise dos desenvolvedores.
 
-Cria o arquivo `.env` dentro de `rage-button/`:
+## **Fora do escopo**
 
-```env
-VITE_API_URL=http://localhost:8000
-```
+* Publicação de jogos.  
+* Marketplace de jogos.
 
 ---
 
-### 2. Backend
+## **Restrições Técnicas**
 
-```bash
-cd rage-backend
-
-# Cria ambiente virtual
-python -m venv .venv
-
-# Ativa o ambiente (Windows)
-.venv\Scripts\activate
-
-# Instala dependências
-pip install -r requirements.txt
-```
-
-Cria o arquivo `.env` dentro de `rage-backend/` (copia do exemplo):
-
-```bash
-copy .env.example .env
-```
-
-Edita o `.env` e coloca a URL do Supabase:
-
-```env
-DATABASE_URL=postgresql+asyncpg://postgres:SUA_SENHA@db.SEU_PROJETO.supabase.co:5432/postgres
-```
-
-> Encontra a URL em: **Supabase Dashboard → Connect → URI**
+* RODAR EM NUVEM, para alcançar uma variedade maior de público.  
+* Gerenciar arquivos de erros, exemplo:  
+  * Descrição do erro (feita pelo jogador).  
+  * print ou gravação de segundos antes (feitas pelo sistema).  
+  * Envio de métricas do erro (feitas pelo sistema).  
+* Garantir segurança e privacidade dos desenvolvedores.
 
 ---
 
-### 3. Banco de dados (Supabase)
+## **Atributos de Qualidade**
 
-Acessa o **SQL Editor** do Supabase e roda o conteúdo do arquivo `rage-backend/schema.sql`.
+Priorizados da seguinte forma:
 
-Isso cria todas as tabelas, índices e views necessárias.
-
----
-
-## Rodando manualmente (sem o start.bat)
-
-### Backend
-
-```bash
-cd rage-backend
-.venv\Scripts\activate
-python start.py
-```
-
-Disponível em:
-- API → http://localhost:8000
-- Docs interativos → http://localhost:8000/docs
+1. **Confidencialidade**: proteger informações sensíveis e garantir conformidade regulatória.  
+2. **Usabilidade**: intuitivo e fácil de usar.  
+3. **Confiabilidade**: assegurar estabilidade do sistema e operação consistente.
 
 ---
 
-### Frontend
+## **Decisões de Design**
 
-```bash
-cd rage-button
-npm run dev
-```
+### **Tecnologias Escolhidas**
 
-Disponível em http://localhost:5173
-
----
-
-## Endpoints da API
-
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| `POST` | `/rage-trigger` | Recebe um report do frontend |
-| `GET` | `/incidents` | Lista todos os incidents |
-| `GET` | `/incidents/{id}` | Detalhes de um incident |
-| `GET` | `/incidents/{id}/screenshot` | Imagem capturada |
-| `GET` | `/incidents/{id}/video` | Replay dos 30s anteriores |
-| `PATCH` | `/incidents/{id}` | Atualiza status ou severidade |
-| `GET` | `/incidents/groups/list` | Bugs agrupados por similaridade |
-| `GET` | `/health` | Status da API |
-| `WS` | `/ws/frames/{session_id}` | Stream de frames para replay |
+* **WebRTC:** Para garantir latência mínima no streaming de feedback.  
+* **Node.js/TypeScript:** Escalabilidade e facilidade na manipulação de eventos em tempo real.  
+* **AWS (ECS/Fargate):** Para escalar instâncias de jogos conforme a demanda dos testes.
 
 ---
 
-## Variáveis de ambiente
+## **Arquitetura de Dados do Sistema**
 
-### Frontend (`rage-button/.env`)
+### **Camada Frontend**
 
-| Variável | Descrição | Padrão |
-|----------|-----------|--------|
-| `VITE_API_URL` | URL do backend | `http://localhost:8000` |
+* **Web App (React/Next.js):** Interface para usuários e dashboard de devs
 
-### Backend (`rage-backend/.env`)
+### **Camada comunicação**
 
-| Variável | Descrição | Padrão |
-|----------|-----------|--------|
-| `DATABASE_URL` | URL do banco (Supabase) | SQLite local |
-| `REPLAY_ENABLED` | Ativa geração de replay | `true` |
-| `REPLAY_MODE` | `websocket` ou `mss` | `websocket` |
-| `PRIVACY_SCRUB_PII` | Remove emails/IPs dos logs | `true` |
-| `DISCORD_WEBHOOK_URL` | Alertas no Discord | vazio |
-| `SLACK_WEBHOOK_URL` | Alertas no Slack | vazio |
-| `WEBHOOK_COOLDOWN_SECONDS` | Intervalo entre alertas | `60` |
+* **API Gateway (Node.js):** Orquestração de serviços.
+
+### **Camada Backend**
+
+* **Streaming Engine (WebRTC):** Responsável pelo "Playtesting" ao vivo sem download.  
+* **Database (PostgreSQL):** Armazenamento de telemetria e dados de usuários.
 
 ---
 
-## Alertas (Discord / Slack)
+## **Autenticação**
 
-Adiciona a URL do webhook no `.env`:
-
-```env
-DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
-SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
-```
-
-O sistema envia automaticamente quando um rage é reportado, com cooldown de 60 segundos por categoria para evitar spam.
+* Implementação de autenticação via Google/GitHub para acesso seguro e simplificado dos usuários.
 
 ---
 
-## Replay pré-trigger
+## 
 
-O sistema grava os **30 segundos anteriores** ao clique, não só o momento do evento.
+## **Caso de uso atual**
 
-**Modo `websocket`** (jogos browser):
-O frontend envia frames via WebSocket. Adiciona no teu jogo:
+Exemplo:
 
-```typescript
-// Conecta ao backend e envia frames a cada 100ms
-const ws = new WebSocket(`ws://localhost:8000/ws/frames/${sessionId}`)
-setInterval(() => {
-  const canvas = document.querySelector('canvas')
-  if (canvas && ws.readyState === WebSocket.OPEN) {
-    ws.send(canvas.toDataURL('image/jpeg', 0.5))
-  }
-}, 100)
-```
+#### **Caso de Uso 01 – Reportar Bug**
 
-**Modo `mss`** (jogo desktop na mesma máquina):
-```env
-REPLAY_MODE=mss
-```
-Captura a tela automaticamente sem precisar de nada no frontend.
+**Ator:** Jogador
 
----
+Fluxo:
 
-## Migrar para produção
+1. O jogador encontra um erro.  
+2. Clica em "Reportar Bug".  
+3. Sistema captura:  
+   * descrição;  
+   * screenshot / vídeo dos últimos segundos;  
+   * métricas do jogo.  
+4. Dados são enviados para o backend.  
+5. O Desenvolvedor recebe o relatório.
 
-1. Troca `DATABASE_URL` para a URL de produção do Supabase
-2. Define `APP_ENV=production` no `.env`
-3. Troca `SECRET_KEY` por um valor seguro
-4. Deploy do backend: Railway, Render, ou qualquer VPS com Python
-5. Deploy do frontend: Vercel, Netlify, ou Cloudflare Pages
